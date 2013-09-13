@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="no"?>
+
+<graph>
+
+	<description>
+
+	The provenance Roll
+
+	</description>
+
+	<copyright>
+	Copyright (c) 2000 - 2012 The Regents of the University of California.
+	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+	
+	</copyright>
+
+	<changelog>
+	$Log$
+	</changelog>
+
+	<!-- add edges here -->
+	<edge from="server" to="provenance-server"/>
+	<edge from="server" to="provenance-common"/>
+	<edge from="client" to="provenance-common"/>
+
+</graph>
