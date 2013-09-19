@@ -1,0 +1,8 @@
+#
+# rabbitmq-env.conf
+#
+
+CONFIG_FILE=@RMQHOME@/etc/rabbitmq/rabbitmq
+NODE_PORT=5672
+CONSOLE_LOG=new
+

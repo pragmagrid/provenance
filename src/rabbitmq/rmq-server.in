@@ -1,0 +1,81 @@
+#!/bin/bash
+#
+# xinetd        This starts and stops xinetd.
+#
+# chkconfig: 345 99 01
+# description: rabbitmq server
+#
+
+PATH=/sbin:/bin:/usr/bin:/usr/sbin:@RMQHOME@/sbin:@ERLANG@/bin
+
+# Source function library.
+. /etc/init.d/functions
+
+RETVAL=0
+
+prog="rabbitmq-server"
+RMQ_DAEMON=beam
+RABBITMQ_HOME=@RMQHOME@
+RMQPID=/var/run/rabbitmq.pid
+
+start(){
+    [ -f $RABBITMQ_HOME/sbin/$prog ] || exit 5
+    echo -n $"Starting $prog: "
+    $RABBITMQ_HOME/sbin/$prog -detached
+    sleep 2
+    pidof $RMQ_DAEMON > $RMQPID
+
+    RETVAL=$?
+    echo
+    return $RETVAL
+}
+
+stop(){
+    [ -f $RABBITMQ_HOME/sbin/rabbitmqctl ] || exit 5
+    echo -n $"Stopping $prog: "
+    $RABBITMQ_HOME/sbin/rabbitmqctl stop
+    RETVAL=$?
+
+    if [ -f $RMQPID ]; then
+        rm -rf $RMQPID
+    fi
+        
+    echo
+    return $RETVAL
+}
+
+restart(){
+    stop
+    start
+}
+
+status(){
+    [ -f $RABBITMQ_HOME/sbin/rabbitmqctl ] || exit 5
+    $RABBITMQ_HOME/sbin/rabbitmqctl status
+}
+
+
+# See how we were called.
+case "$1" in
+    start)
+	start
+	RETVAL=$?
+	;;
+    stop)
+	stop
+	RETVAL=$?
+	;;
+    status)
+	status 
+	RETVAL=$?
+	;;
+    restart)
+	restart
+	RETVAL=$?
+	;;
+    *)
+	echo $"Usage: $0 {start|stop|status|restart}"
+	RETVAL=2
+esac
+
+exit $RETVAL
