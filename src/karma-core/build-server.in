@@ -1,0 +1,42 @@
+#!/bin/sh
+
+CLASSES=@KARMAHOME@/lib/classes
+LIB=@KARMAHOME@/lib
+
+LIBJARS=`ls ./lib/ | grep ".jar"`
+for i in $LIBJARS; do
+        CLASSES=$CLASSES:$LIB/$i
+done
+
+BUILDJARS=`ls ./build |grep ".jar"`
+for i in $BUILDJARS;  do
+        CLASSES=$CLASSES:$LIB/$i
+done
+
+echo "
+#!/bin/bash
+
+CLASSES=$CLASSES
+" > KarmaServer.sh
+
+echo '
+function usage
+{
+        echo 
+        echo "#########################################"
+        echo "#            KarmaServer.sh             #"
+        echo "#########################################"
+        echo
+        echo "$ KarmaServer.sh <properties_file>"
+		echo
+}
+
+if [ "$1" = "" ];
+then
+    usage;
+    exit 1
+fi
+
+CP=:$CLASSPATH:$CLASSES:.
+java -classpath $CP  edu.indiana.dsi.karma.util.ServiceLauncher $1
+' >> KarmaServer.sh
