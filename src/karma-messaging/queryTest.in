@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# query test run
+
+PROG=@KARMAHOME@/bin/query.sh
+CONFIG=@KARMAHOME@/config/karma.properties
+XML=@KARMAHOME@/samples/sampleWorkflow1/query/getWorkflowGraphRequest.xml 
+OUT=/tmp/graph.xml
+
+echo "Running command: $PROG $CONFIG  $XML $OUT"
+$PROG $CONFIG  $XML $OUT
+echo "Created /tmp/graph.xml"

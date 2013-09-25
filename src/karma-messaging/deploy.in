@@ -1,0 +1,65 @@
+#!/bin/sh
+
+CLASSES=@KARMAHOME@/lib/classes
+LIB=@KARMAHOME@/lib
+
+LIBJARS=`ls ./lib/ | grep ".jar"`
+for i in $LIBJARS; do
+        CLASSES=$CLASSES:$LIB/$i
+done
+
+BUILDJARS=`ls ./build/lib |grep ".jar"`
+for i in $BUILDJARS;  do
+        CLASSES=$CLASSES:$LIB/$i
+done
+
+build_KarmaRun () {
+echo '
+#!/bin/bash
+
+CLASSPATH=$CLASSPATH:'$CLASSES'
+
+if [ $# -eq 0 ]; then
+   echo "Usage: KarmaRun.sh <Main_Class> <Arguments>"
+   exit 1
+fi
+
+java -classpath $CLASSPATH "$@"
+
+' > KarmaRun.sh
+}
+
+build_query () {
+echo '
+#!/bin/bash
+
+CLASSPATH=$CLASSPATH:'$CLASSES'
+
+if [ $# -lt 3 ]; then
+    echo "Usage: query.sh <karma configuration file> <query xml file> <output file>"
+    exit 1
+fi
+
+java -classpath $CLASSPATH edu.indiana.dsi.karma.client.messaging.Query $1 $2 > $3
+' > query.sh
+} 
+
+build_sendNotification () {
+echo '
+#!/bin/bash
+
+CLASSPATH=$CLASSPATH:'$CLASSES'
+
+if [ $# -lt 2 ];
+then
+    echo "Usage: sendNotification.sh <karma configuration file> <notification xml file>"
+    exit 1
+fi
+
+java -classpath $CLASSPATH edu.indiana.dsi.karma.client.messaging.Notification $1 $2
+' > sendNotification.sh
+}
+
+build_KarmaRun
+build_query
+build_sendNotification
