@@ -1,6 +1,6 @@
 # provenance roll
 
-KARMA_BIN=/opt/provenance/karma-adaptor
+KARMA_BIN=/opt/provenance/karma/bin:/opt/provenance/karma-adaptor/bin:/opt/provenance/karma-client/bin
 CYTOSCAPE_BIN=/opt/provenance/cytoscape/
 ERLANG_BIN=/opt/erlang/bin
 
