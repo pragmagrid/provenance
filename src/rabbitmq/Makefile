@@ -102,7 +102,7 @@ install::
 	install -m 750 configKarmaUser.sh $(ROOT)/$(PKGROOT)/sbin
 
 	mkdir -p $(ROOT)/etc/rc.d/init.d/
-	install -m 755 rmq-server  $(ROOT)/etc/rc.d/init.d
+	install -m 755 rmq-server  $(ROOT)/etc/rc.d/init.d/karmaRMQserver
 
 clean::
 	rm -rf $(NAME)-$(VERSION)

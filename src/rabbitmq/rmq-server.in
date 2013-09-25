@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# xinetd        This starts and stops xinetd.
+# karmaRMQserver        This starts and stops RabbitMQ server
 #
 # chkconfig: 345 99 01
 # description: rabbitmq server
