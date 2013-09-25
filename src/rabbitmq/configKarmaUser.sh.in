@@ -3,7 +3,7 @@
 CTL=@RMQHOME@/sbin/rabbitmqctl
 PLUGIN=@RMQHOME@/sbin/rabbitmq-plugins
 
-# Enable management plugin
+### Enable management plugin
 if [ ! -x $PLUGIN ]; then
     echo "Rabbitmq is not installed"
     exit 1
@@ -11,19 +11,38 @@ fi
 
 $PLUGIN enable rabbitmq_management
 
-# Enable karma users
+### Enable karma users
 if [ ! -x $CTL ]; then
     echo "$CTL is not installed"
     exit 1
 fi
+
+# remove default user
 $CTL delete_user guest
-$CTL add_user karmaclient karmacpass$
-$CTL add_user karmaserver karmaspass$
 
-# Set permissions for karma users
-CLIENT_ACCESS="KarmaExchange.*|KarmaQueueQueryResponse"
-SERVER_ACCESS="Karma.*"
+# set "karmaserver" account 
+SERVER_PASSFILE=/opt/provenance/karma/etc/server.pass
+if [ ! -f $SERVER_PASSFILE ]; then
+    echo "Karma server is not installed, can't add karma server account" 
+    exit 0
+else
+    SPASS=`cat $SERVER_PASSFILE`
+    $CTL add_user karmaserver $SPASS
+    SERVER_ACCESS="Karma.*"
+    $CTL set_permissions -p / karmaserver "$SERVER_ACCESS" "$SERVER_ACCESS" "$SERVER_ACCESS"
+fi
 
-$CTL set_permissions -p / karmaclient "$CLIENT_ACCESS" "$CLIENT_ACCESS" "$CLIENT_ACCESS"
-$CTL set_permissions -p / karmaserver "$SERVER_ACCESS" "$SERVER_ACCESS" "$SERVER_ACCESS"
+
+# set "karmaclient" account 
+CLIENT_PASSFILE=/opt/provenance/karma-client/etc/client.pass
+if [ ! -f $CLIENT_PASSFILE ]; then
+    echo "Karma client is not installed, can't add karma client account" 
+    exit 0
+else
+    CPASS=`cat $CLIENT_PASSFILE`
+    $CTL add_user karmaclient $CPASS
+    CLIENT_ACCESS="KarmaExchange.*|KarmaQueueQueryResponse"
+    $CTL set_permissions -p / karmaclient "$CLIENT_ACCESS" "$CLIENT_ACCESS" "$CLIENT_ACCESS"
+fi
+
 
