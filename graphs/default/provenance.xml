@@ -19,8 +19,16 @@
 	</changelog>
 
 	<!-- add edges here -->
-	<edge from="server" to="provenance-server"/>
+	<edge from="server" to="provenance-server" cond="karma_server"/>
+	<edge from="server" to="provenance-client"/>
 	<edge from="server" to="provenance-common"/>
-	<edge from="client" to="provenance-common"/>
+
+	<order head="provenance-common">
+		<tail>provenance-client</tail>
+	</order>
+
+	<order head="provenance-client">
+		<tail>provenance-server</tail>
+	</order>
 
 </graph>

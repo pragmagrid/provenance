@@ -18,7 +18,7 @@
 	</changelog>
 
 	<package>cytoscape</package>
-	<package>karma-adaptor</package>
+	<package>erlang</package>
 	<package>rocks-provenance</package>
 
 </kickstart>

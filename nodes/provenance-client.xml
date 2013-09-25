@@ -1,0 +1,37 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	Your provenance roll description here
+	</description>
+
+	<copyright>
+	Copyright (c) 2000 - 2012 The Regents of the University of California.
+	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+	
+	</copyright>
+
+	<changelog>
+	$Log$
+	</changelog>
+
+        <package>karma-plugin</package>
+        <package>karma-adaptor</package>
+        <package>karma-messaging-client</package>
+
+<post>
+
+
+<file name="/opt/provenance/karma-client/etc/client.pass" perms="0600">
+<eval>
+mkpasswd -l 10 -s 0 2> /dev/null
+</eval>
+</file>
+KARMA_CLIENTPASS=`cat /opt/provenance/karma-client/etc/client.pass`
+sed -i "s/KARMA_CLIENTPASS/$KARMA_CLIENTPASS/" /opt/provenance/karma-client/config/karma.properties
+
+</post>
+
+</kickstart>
