@@ -44,7 +44,7 @@ messaging.daemon.query=1
 # information to log into the karma database
 #
 #****************************************************************************
-database.location=jdbc:mysql://localhost:3306/karma
+database.location=jdbc:mysql://localhost:3306/karmadb
 database.username=karma
 database.password=KARMA_DBPASS
 
