@@ -1,0 +1,89 @@
+#!/bin/bash
+#
+# karmaServer        This starts and stops karma server
+#
+# chkconfig: 345 99 01
+# description: karma server
+#
+
+export PATH=/sbin:/bin:/usr/bin:/usr/sbin:@KARMAHOME@/bin:/usr/java/latest/bin
+
+# Source function library.
+. /etc/init.d/functions
+
+# source java env
+. /etc/profile.d/java.sh
+
+RETVAL=0
+
+prog="KarmaServer.sh"
+KARMA_DAEMON=karma.util.ServiceLauncher
+KARMA_HOME=@KARMAHOME@
+KARMAPID=/var/run/karmaserver.pid
+
+start(){
+    [ -f $KARMA_HOME/bin/$prog ] || exit 5
+    echo -n $"Starting karma server: "
+    nohup $KARMA_HOME/bin/KarmaServer.sh $KARMA_HOME/config/karma.properties > /var/log/karmaserver.nohup &
+    touch $KARMAPID
+    ps -ef | grep $KARMA_DAEMON | grep -v grep  | awk '{print $2}' > $KARMAPID
+
+    RETVAL=$?
+    echo
+    return $RETVAL
+}
+
+stop(){
+    [ -f $KARMAPID ] || exit 5
+    echo  $"Stopping karma server:"
+    PID=`cat $KARMAPID`
+    kill -9 $PID 
+    RETVAL=$?
+
+    if [ -f $KARMAPID ]; then
+        rm -rf $KARMAPID
+    fi
+
+    echo
+    return $RETVAL
+}
+
+restart(){
+    stop
+    start
+}
+
+status(){
+    RES=`ps -ef | grep $KARMA_DAEMON | grep -v grep  | awk '{print $2}'`
+    if [ x"$RES" = "x" ]; then
+       echo "Karma server is not running"
+    else
+       echo "Karma server pid $RES is running"
+    fi
+}
+
+# See how we were called.
+case "$1" in
+    start)
+        start
+        RETVAL=$?
+        ;;
+    stop)
+        stop
+        RETVAL=$?
+        ;;
+    status)
+        status
+        RETVAL=$?
+        ;;
+    restart)
+        restart
+        RETVAL=$?
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart}"
+        RETVAL=2
+esac
+
+exit $RETVAL
+

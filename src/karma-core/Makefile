@@ -61,12 +61,15 @@ REDHAT.ROOT = $(CURDIR)/../../
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
-SCRIPTS = karma.properties build-server 
+SCRIPTS = karma.properties build-server  karmaServer
 
 SEDSPEC += \
 	-e 's%@KARMAHOME@%$(PKGROOT)%g' 
 
 karma.properties: karma.properties.in
+	$(SED) $(SEDSPEC) $^ > $@
+
+karmaServer: karmaServer.in
 	$(SED) $(SEDSPEC) $^ > $@
 
 build-server: build-server.in
@@ -85,6 +88,7 @@ build:  $(SCRIPTS)
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	mkdir -p $(ROOT)/$(PKGROOT)/bin
+	mkdir -p $(ROOT)/$(PKGROOT)/etc
 	mkdir -p $(ROOT)/$(PKGROOT)/lib
 	(							\
 		cd $(PKGNAME); \
@@ -96,6 +100,10 @@ install::
 
 	install -m 644 karma.properties $(ROOT)/$(PKGROOT)/config
 	install -m 755 $(PKGNAME)/KarmaServer.sh $(ROOT)/$(PKGROOT)/bin
+
+	mkdir -p $(ROOT)/etc/rc.d/init.d/
+	install -m 755 karmaServer  $(ROOT)/etc/rc.d/init.d/
+
 
 clean::
 	rm -rf $(PKGNAME)
