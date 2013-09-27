@@ -72,6 +72,7 @@ install::
 		cd $(ROOT)/$(PKGROOT)/$(NAME); \
 		rm -rf *.bat                 ; \
 		chmod a-x *.txt *.html       ; \
+		./gen_vmoptions.sh           ; \
 	)
 
 clean::
