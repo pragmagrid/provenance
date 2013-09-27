@@ -25,7 +25,9 @@ start(){
     [ -f $KARMA_HOME/bin/$prog ] || exit 5
     echo -n $"Starting karma server: "
     nohup $KARMA_HOME/bin/KarmaServer.sh $KARMA_HOME/config/karma.properties > /var/log/karmaserver.nohup &
+
     touch $KARMAPID
+    sleep 5
     ps -ef | grep $KARMA_DAEMON | grep -v grep  | awk '{print $2}' > $KARMAPID
 
     RETVAL=$?
