@@ -44,18 +44,18 @@ Roll install
 ------------
 The roll provides installation for karma server or karma client. 
 
-A client installaton provides : 
+Client installaton  : 
 -	karma messaging client
 -	karma visualization plugin
 -	cytoscape (dependency)
 -	erlang  (dependency)
 
-A server installaton provides : 
+Server installaton  : 
 -	client installation
 -	karma server
 -	rabbitmq server
 
 If installing karma server need to set a host attribute before adding the roll:
 
-   rocks set host attr localhost karma_server true
+   **rocks set host attr localhost karma_server true**
 
