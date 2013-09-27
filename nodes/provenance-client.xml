@@ -18,7 +18,6 @@
 	</changelog>
 
         <package>karma-plugin</package>
-        <package>karma-adaptor</package>
         <package>karma-messaging-client</package>
 
 <post>
@@ -31,6 +30,8 @@ mkpasswd -l 10 -s 0 2> /dev/null
 </file>
 KARMA_CLIENTPASS=`cat /opt/provenance/karma-client/etc/client.pass`
 sed -i "s/KARMA_CLIENTPASS/$KARMA_CLIENTPASS/" /opt/provenance/karma-client/config/karma.properties
+sed -i "s/KARMA_CLIENTPASS/$KARMA_CLIENTPASS/" /opt/provenance/cytoscape/plugins/config/karmaQueryConfig.txt
+sed -i "s/KARMA_CLIENTPASS/$KARMA_CLIENTPASS/" /opt/provenance/cytoscape/plugins/config/karmaVisConfig.txt
 
 </post>
 
