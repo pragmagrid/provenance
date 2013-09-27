@@ -1,15 +1,6 @@
 #!/bin/bash
 
 CTL=@RMQHOME@/sbin/rabbitmqctl
-PLUGIN=@RMQHOME@/sbin/rabbitmq-plugins
-
-### Enable management plugin
-if [ ! -x $PLUGIN ]; then
-    echo "Rabbitmq is not installed"
-    exit 1
-fi
-
-$PLUGIN enable rabbitmq_management
 
 ### Enable karma users
 if [ ! -x $CTL ]; then
