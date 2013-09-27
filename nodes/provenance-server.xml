@@ -61,6 +61,10 @@ else
     echo "Karma database schema is not found"
 fi
 
+<!-- enable rabbitmq management plugins -->
+if [ -x /opt/rabbitmq/sbin/rabbitmq-plugins ]; then
+    /opt/rabbitmq/sbin/rabbitmq-plugins enable rabbitmq_management
+fi
 
 <!-- start rabbitMQ server -->
 if [ ! -f /var/run/rabbitmq.pid ]; then
@@ -69,6 +73,7 @@ else
     /etc/init.d/karmaRMQserver restart
 fi
 
+sleep 30
 /sbin/chkconfig --add karmaRMQserver 
 
 <!-- configure karma server password -->
@@ -79,7 +84,6 @@ mkpasswd -l 10 -s 0 2> /dev/null
 </file>
 KARMA_SERVERPASS=`cat /opt/provenance/karma/etc/server.pass`
 sed -i "s/KARMA_SERVERPASS/$KARMA_SERVERPASS/; s/KARMA_DBPASS/$KARMA_DBPASS/" /opt/provenance/karma/config/karma.properties
-
 
 <!-- configure rabbitMQ  users  -->
 /opt/rabbitmq/sbin/configKarmaUser.sh 
