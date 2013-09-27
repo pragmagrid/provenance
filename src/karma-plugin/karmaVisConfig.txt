@@ -1,0 +1,14 @@
+#Properties for using Karma Vis Plugin
+#@author: Peng Chen (chenpeng@indiana.edu)
+#axis2.serviceURL: information to use Axis Service
+#messaging: information to use RabbitMQ messaging system
+#Fri Jul 29 15:43:35 EDT 2011
+messaging.username=karmaclient
+messaging.password=KARMA_CLIENTPASS
+messaging.hostname=localhost
+messaging.hostport=5672
+messaging.routingkey=KarmaKey
+messaging.exchangename=KarmaExchange
+messaging.queuename=KarmaQueue
+messaging.virtualhost=/
+axis2.serviceURL=

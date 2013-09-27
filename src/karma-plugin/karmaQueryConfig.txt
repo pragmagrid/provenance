@@ -1,0 +1,13 @@
+#Properties for using Karma Query Plugin
+#@author: Peng Chen (chenpeng@indiana.edu)
+#Information to use Axis Service and RabbitMQ messaging system
+#Fri Jun 15 10:16:01 EDT 2012
+messaging.username=karmaclient
+messaging.password=KARMA_CLIENTPASS
+messaging.hostname=localhost
+messaging.hostport=5672
+messaging.routingkey=KarmaKey
+messaging.exchangename=KarmaExchange
+messaging.queuename=KarmaQueue
+messaging.virtualhost=/
+axis2.serviceURL=

@@ -75,8 +75,9 @@ install::
 	cp $(VIS)/lib/* $(ROOT)/$(PKGROOT)/plugins
 	cp $(QUERY)/KarmaRetrieval.jar $(ROOT)/$(PKGROOT)/plugins 
 	cp $(QUERY)/lib/* $(ROOT)/$(PKGROOT)/plugins 
-	cp $(VIS)/config/* $(ROOT)/$(PKGROOT)/plugins/config
-	cp $(QUERY)/config/* $(ROOT)/$(PKGROOT)/plugins/config
+	cp $(VIS)/config/pluginConfig.xml $(ROOT)/$(PKGROOT)/plugins/config
+	cp karmaQueryConfig.txt $(ROOT)/$(PKGROOT)/plugins/config
+	cp karmaVisConfig.txt $(ROOT)/$(PKGROOT)/plugins/config
 
 clean::
 	rm -rf visualization
