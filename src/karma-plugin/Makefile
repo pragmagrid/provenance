@@ -65,7 +65,6 @@ build:
 	tar xzf karma-$(VERSION)-$(PKGNAME).$(TARBALL_POSTFIX) 
 	echo "cytoscape.dir=$(PKGROOT)" > $(VIS)/build.properties
 	echo "cytoscape.dir=$(PKGROOT)" > $(QUERY)/build.properties
-	sed -i 's/drag anything.*/drag anything/' $(QUERY)/src/cytoscape/GUI/DragTree.java
 	(cd $(QUERY); ant)
 	(cd $(VIS); ant)
 	
@@ -77,7 +76,6 @@ install::
 	cp $(QUERY)/lib/* $(ROOT)/$(PKGROOT)/plugins 
 	cp $(VIS)/config/pluginConfig.xml $(ROOT)/$(PKGROOT)/plugins/config
 	cp karmaQueryConfig.txt $(ROOT)/$(PKGROOT)/plugins/config
-	cp karmaVisConfig.txt $(ROOT)/$(PKGROOT)/plugins/config
 
 clean::
 	rm -rf visualization
