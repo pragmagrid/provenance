@@ -1,7 +1,7 @@
 PKGROOT		= /opt/provenance/cytoscape
 NAME            = karma-plugin
 PKGNAME         = visualization
-VERSION         = v3.2.3
+VERSION         = v3.2.3p
 RELEASE 	= 0
 TARBALL_POSTFIX	= tar.gz
 
