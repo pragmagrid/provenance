@@ -1,0 +1,15 @@
+# $Id: karma.properties 
+# @author: Yuan Luo (yuanluo@indiana.edu)
+#
+# Karma properties for using Karma Client
+
+# information to use RabbitMQ messaging system
+messaging.username=karmaclient
+messaging.password=KARMA_CLIENTPASS
+messaging.hostname=localhost
+messaging.hostport=5672
+messaging.virtualhost=/
+messaging.exchangename=KarmaExchange
+messaging.queuename=KarmaQueue
+messaging.routingkey=KarmaKey
+

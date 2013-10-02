@@ -1,0 +1,15 @@
+userDN=LifeMapper	
+type=ORGANIZATION
+email=lifemapper@ku.edu
+timeZone=-04:00
+file_ownerDN=LifeMapper
+workflowNodeID=LifeMapper
+
+LifeMapper_WebService_URI=http://lifemapper.org/services/sdm/experiments
+LifeMapper_Projection_URI=http://lifemapper.org/services/sdm/projections
+LifeMapper_Occurrences_URI=http://lifemapper.org/services/sdm/occurrences
+
+Karma_Properties=@KARMALM@/config/karma.properties
+
+Daemon_State_Path=daemonState.txt
+Central_Log_Path=@LMVAR@/jobs

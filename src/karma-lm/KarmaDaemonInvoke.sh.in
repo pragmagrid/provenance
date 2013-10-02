@@ -1,0 +1,22 @@
+#!/bin/sh
+
+LMHOME=@KARMALM@
+KARMACLIENT=@KARMACLIENT@
+Daemon_Invoke_Interval=20
+
+for i in $(ls $KARMACLIENT/lib | grep jar); do
+	CLASSPATH=$CLASSPATH:$KARMACLIENT/lib/$i
+done
+
+for i in $(ls $LMHOME/lib | grep jar); do
+	CLASSPATH=$CLASSPATH:$LMHOME/lib/$i
+done
+
+echo $CLASSPATH
+
+while true 
+    do
+        java -classpath $CLASSPATH KARMADaemon.KARMADaemon
+        sleep $Daemon_Invoke_Interval
+    done
+
