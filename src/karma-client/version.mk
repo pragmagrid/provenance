@@ -1,5 +1,5 @@
 PKGROOT		= /opt/provenance/karma-client
-NAME            = karma-messaging-client
+NAME            = karma-client
 PKGNAME         = client-core
 VERSION         = v3.2.3
 
