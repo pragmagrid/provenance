@@ -1,9 +1,9 @@
 PKGROOT	        = /opt/provenance/karma-lm-adaptor
 KARMACLIENT	= /opt/provenance/karma-client
-LMVAR      	= /var/lm
+LMVAR      	= /share/lm/logs
 NAME            = karma-lm-adaptor
 PKGNAME         = LifeMapperKarma
-VERSION         = V2
+VERSION         = V3_1
 RELEASE 	= 0
 TARBALL_POSTFIX	= tar.gz
 

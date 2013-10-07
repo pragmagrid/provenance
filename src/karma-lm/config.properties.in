@@ -1,15 +1,16 @@
-userDN=LifeMapper	
-type=ORGANIZATION
-email=lifemapper@ku.edu
+user_email=lifemapper.at.ku.edu
+runLmJob_script_path=runLmJob.sh
 timeZone=-04:00
-file_ownerDN=LifeMapper
-workflowNodeID=LifeMapper
 
 LifeMapper_WebService_URI=http://lifemapper.org/services/sdm/experiments
 LifeMapper_Projection_URI=http://lifemapper.org/services/sdm/projections
 LifeMapper_Occurrences_URI=http://lifemapper.org/services/sdm/occurrences
 
 Karma_Properties=@KARMALM@/config/karma.properties
+Log4j_Properties=@KARMALM@/config/log4j.properties
 
-Daemon_State_Path=daemonState.txt
-Central_Log_Path=@LMVAR@/jobs
+Daemon_State_Path=@LMVAR@/daemonState.txt
+SGE_State_Path=@LMVAR@/sgeState.txt
+Central_Log_Path=/share/lm/jobs
+SGE_Accounting=/opt/gridengine/default/common/accounting
+Provenance_Output_Path=@LMVAR@/experiment

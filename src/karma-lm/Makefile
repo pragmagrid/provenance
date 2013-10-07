@@ -82,7 +82,8 @@ config.properties: config.properties.in
 	$(SED) $(SEDSPEC) $^ > $@
 
 build: $(SCRIPTS) $(CONFIGS)
-	tar xzf LifeMapperKARMA$(VERSION).$(TARBALL_POSTFIX) --strip=1
+	tar xzf LifeMapperKarma$(VERSION).$(TARBALL_POSTFIX) --strip=1
+	sed -i 's/\.\.\/KarmaClient/\/opt\/provenance\/karma-client/' $(PKGNAME)/build.xml 
 	(cd $(PKGNAME); ant build)
 	
 install::
