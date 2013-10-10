@@ -7,6 +7,7 @@
 #
 
 PATH=/sbin:/bin:/usr/bin:/usr/sbin:@RMQHOME@/sbin:@ERLANG@/bin
+export HOME=/root
 
 # Source function library.
 . /etc/init.d/functions
@@ -18,7 +19,15 @@ RMQ_DAEMON=beam
 RABBITMQ_HOME=@RMQHOME@
 RMQPID=/var/run/rabbitmq.pid
 
+PRECONFIG=/opt/rabbitmq/var/firstboot
+
 start(){
+    if [ -f $PRECONFIG ]; then
+        if [ -x /opt/rabbitmq/sbin/rabbitmq-plugins ]; then
+            /opt/rabbitmq/sbin/rabbitmq-plugins enable rabbitmq_management
+        fi
+    fi
+
     [ -f $RABBITMQ_HOME/sbin/$prog ] || exit 5
     echo -n $"Starting $prog: "
     $RABBITMQ_HOME/sbin/$prog -detached
@@ -26,6 +35,12 @@ start(){
     pidof $RMQ_DAEMON > $RMQPID
 
     RETVAL=$?
+
+    if [ -f $PRECONFIG ]; then
+        /opt/rabbitmq/sbin/configKarmaUser.sh
+        rm $PRECONFIG
+    fi
+
     echo
     return $RETVAL
 }

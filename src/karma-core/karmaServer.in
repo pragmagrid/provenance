@@ -21,7 +21,14 @@ KARMA_DAEMON=karma.util.ServiceLauncher
 KARMA_HOME=@KARMAHOME@
 KARMAPID=/var/run/karmaserver.pid
 
+PRECONFIG=/etc/rc.d/rocksconfig.d/post-99-karma-server
+
+
 start(){
+    if [ -f $PRECONFIG ]; then
+        action $"Karma Server Post Installation" $PRECONFIG 2> /dev/null
+    fi
+
     [ -f $KARMA_HOME/bin/$prog ] || exit 5
     echo -n $"Starting karma server: "
     nohup $KARMA_HOME/bin/KarmaServer.sh $KARMA_HOME/config/karma.properties > /var/log/karmaserver.nohup &
