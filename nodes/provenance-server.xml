@@ -47,7 +47,7 @@ if [ ! -f /var/lock/subsys/mysqld ]; then
 
 <file name="/opt/provenance/karma/etc/db.pass" perms="0600">
 <eval>
-mkpasswd -l 10 -s 0 2> /dev/null
+date +"%H:%M:%S"| md5sum | head -c10
 </eval>
 </file>
 
@@ -79,7 +79,7 @@ sleep 30
 <!-- configure karma server password -->
 <file name="/opt/provenance/karma/etc/server.pass" perms="0600">
 <eval>
-mkpasswd -l 10 -s 0 2> /dev/null
+date +"%H:%M:%S"| md5sum | head -c10
 </eval>
 </file>
 KARMA_SERVERPASS=`cat /opt/provenance/karma/etc/server.pass`
