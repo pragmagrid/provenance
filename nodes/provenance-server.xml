@@ -36,37 +36,45 @@ collation-server=utf8_general_ci
 skip-character-set-client-handshake
 </file>
 
+<file name="/etc/rc.d/rocksconfig.d/post-99-karma-server" perms="744">
+#!/bin/sh
+
 if [ ! -f /var/lock/subsys/mysqld ]; then
     /etc/init.d/mysqld start
-    else
-        /etc/init.d/mysqld restart
-        fi
+else
+   /etc/init.d/mysqld restart
+fi
 
 /sbin/chkconfig mysqld on
+
+/usr/bin/mysqladmin -s ping > /dev/null
+while [ $? -eq 1 ]; do
+    sleep 1
+    /usr//bin/mysqladmin -s ping > /dev/null
+done
+
 /usr/bin/mysqladmin create karmadb
 
-<file name="/opt/provenance/karma/etc/db.pass" perms="0600">
-<eval>
-date +"%H:%M:%S"| md5sum | head -c10
-</eval>
-</file>
+date +"%H:%M:%S"| md5sum | head -c10 > /opt/provenance/karma/etc/db.pass
+chmod 600 /opt/provenance/karma/etc/db.pass
 
 KARMA_DBPASS=`cat /opt/provenance/karma/etc/db.pass`
 /bin/echo -en GRANT ALL PRIVILEGES ON karmadb.* TO 'karma'@'localhost' IDENTIFIED BY \'$KARMA_DBPASS\' \; | /usr/bin/mysql
 /bin/echo -en GRANT SELECT ON mysql.proc TO 'karma'@'localhost' \; | /usr/bin/mysql
 
 if [ -f /opt/provenance/karma/config/karma_db_schema.sql ]; then
-    /usr/bin/mysql -u root karmadb &lt; /opt/provenance/karma/config/karma_db_schema.sql 
+    /usr/bin/mysql -u root karmadb < /opt/provenance/karma/config/karma_db_schema.sql 
 else
     echo "Karma database schema is not found"
+    exit 
 fi
 
-<!-- enable rabbitmq management plugins -->
+# enable rabbitmq management plugins 
 if [ -x /opt/rabbitmq/sbin/rabbitmq-plugins ]; then
     /opt/rabbitmq/sbin/rabbitmq-plugins enable rabbitmq_management
 fi
 
-<!-- start rabbitMQ server -->
+# start rabbitMQ server 
 if [ ! -f /var/run/rabbitmq.pid ]; then
     /etc/init.d/karmaRMQserver start
 else
@@ -76,19 +84,16 @@ fi
 sleep 30
 /sbin/chkconfig --add karmaRMQserver 
 
-<!-- configure karma server password -->
-<file name="/opt/provenance/karma/etc/server.pass" perms="0600">
-<eval>
-date +"%H:%M:%S"| md5sum | head -c10
-</eval>
-</file>
+# configure karma server password 
+date +"%H:%M:%S"| md5sum | head -c10 > /opt/provenance/karma/etc/server.pass
+chmod 600 /opt/provenance/karma/etc/server.pass
 KARMA_SERVERPASS=`cat /opt/provenance/karma/etc/server.pass`
 sed -i "s/KARMA_SERVERPASS/$KARMA_SERVERPASS/; s/KARMA_DBPASS/$KARMA_DBPASS/" /opt/provenance/karma/config/karma.properties
 
-<!-- configure rabbitMQ  users  -->
+# configure rabbitMQ  users  
 /opt/rabbitmq/sbin/configKarmaUser.sh 
 
-<!-- start karma server -->
+# start karma server 
 if [ ! -f /var/run/karmaserver.pid ]; then
     /etc/init.d/karmaServer start
 else
@@ -96,6 +101,9 @@ else
 fi
 
 /sbin/chkconfig --add karmaServer 
+
+/bin/rm -f /etc/rc.d/rocksconfig.d/post-99-karma-server
+</file>
 
 </post>
 
