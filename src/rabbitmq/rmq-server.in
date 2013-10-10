@@ -2,7 +2,7 @@
 #
 # karmaRMQserver        This starts and stops RabbitMQ server
 #
-# chkconfig: 345 99 01
+# chkconfig: 5 98 01
 # description: rabbitmq server
 #
 
@@ -22,7 +22,7 @@ start(){
     [ -f $RABBITMQ_HOME/sbin/$prog ] || exit 5
     echo -n $"Starting $prog: "
     $RABBITMQ_HOME/sbin/$prog -detached
-    sleep 2
+    sleep 20
     pidof $RMQ_DAEMON > $RMQPID
 
     RETVAL=$?
