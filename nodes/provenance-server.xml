@@ -44,6 +44,14 @@ if [ -d /opt/rabbitmq/var ]; then
     touch /opt/rabbitmq/var/firstboot
 fi
 
+<file name="/opt/provenance/karma/etc/server.pass" perms="0600">
+<eval>
+date +"%H:%M"| md5sum | head -c10
+</eval>
+</file>
+KARMA_SERVERPASS=`cat /opt/provenance/karma/etc/server.pass`
+sed -i "s/KARMA_SERVERPASS/$KARMA_SERVERPASS/;" /opt/provenance/karma/config/karma.properties
+
 <file name="/etc/rc.d/rocksconfig.d/post-99-karma-server" perms="0755">
 #!/bin/sh
 
@@ -53,33 +61,31 @@ else
    /etc/init.d/mysqld restart
 fi
 
-/usr/bin/mysqladmin -s ping > /dev/null
+/usr/bin/mysqladmin -s ping &gt; /dev/null
 while [ $? -eq 1 ]; do
     sleep 1
-    /usr//bin/mysqladmin -s ping > /dev/null
+    /usr//bin/mysqladmin -s ping &gt; /dev/null
 done
 
 /usr/bin/mysqladmin create karmadb
 
-date +"%H:%M:%S"| md5sum | head -c10 > /opt/provenance/karma/etc/db.pass
+date +"%H:%M:%S"| md5sum | head -c10 &gt; /opt/provenance/karma/etc/db.pass
 chmod 600 /opt/provenance/karma/etc/db.pass
-
 KARMA_DBPASS=`cat /opt/provenance/karma/etc/db.pass`
+sed -i "s/KARMA_DBPASS/$KARMA_DBPASS/" /opt/provenance/karma/config/karma.properties
 /bin/echo -en GRANT ALL PRIVILEGES ON karmadb.* TO 'karma'@'localhost' IDENTIFIED BY \'$KARMA_DBPASS\' \; | /usr/bin/mysql
 /bin/echo -en GRANT SELECT ON mysql.proc TO 'karma'@'localhost' \; | /usr/bin/mysql
+HOST=`hostname`
+/bin/echo -en GRANT ALL PRIVILEGES ON karmadb.* TO 'karma'@\'$HOST\' IDENTIFIED BY \'$KARMA_DBPASS\' \; | /usr/bin/mysql
+/bin/echo -en GRANT SELECT ON mysql.proc TO 'karma'@\'$HOST\' \; | /usr/bin/mysql
+/bin/echo -en GRANT EXECUTE ON PROCEDURE karma.PR_OBJECT_LOCK TO 'karma'@\'$HOST\';
 
 if [ -f /opt/provenance/karma/config/karma_db_schema.sql ]; then
-    /usr/bin/mysql -u root karmadb < /opt/provenance/karma/config/karma_db_schema.sql 
+    /usr/bin/mysql -u root karmadb &lt; /opt/provenance/karma/config/karma_db_schema.sql 
 else
     echo "Karma database schema is not found"
     exit 
 fi
-
-# configure karma server password 
-date +"%H:%M:%S"| md5sum | head -c10 > /opt/provenance/karma/etc/server.pass
-chmod 600 /opt/provenance/karma/etc/server.pass
-KARMA_SERVERPASS=`cat /opt/provenance/karma/etc/server.pass`
-sed -i "s/KARMA_SERVERPASS/$KARMA_SERVERPASS/; s/KARMA_DBPASS/$KARMA_DBPASS/" /opt/provenance/karma/config/karma.properties
 
 /bin/rm -f /etc/rc.d/rocksconfig.d/post-99-karma-server
 </file>
