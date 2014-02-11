@@ -34,8 +34,6 @@ sed -i "s/KARMA_CLIENTPASS/$KARMA_CLIENTPASS/" /opt/provenance/karma-client/conf
 sed -i "s/KARMA_CLIENTPASS/$KARMA_CLIENTPASS/" /opt/provenance/karma-lm-adaptor/config/karma.properties
 sed -i "s/KARMA_CLIENTPASS/$KARMA_CLIENTPASS/" /opt/provenance/cytoscape/plugins/config/karmaQueryConfig.txt
 
-mkdir -p /state/partition/lm/logs
-
 </post>
 
 </kickstart>
