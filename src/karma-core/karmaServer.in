@@ -2,7 +2,7 @@
 #
 # karmaServer        This starts and stops karma server
 #
-# chkconfig: 345 99 01
+# chkconfig: 5 99 01
 # description: karma server
 #
 
